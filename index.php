@@ -38,8 +38,7 @@ if ($basePath !== '' && $basePath !== '.' && $basePath !== '/') {
 }
 $requestPath = '/' . trim($requestPath, '/');
 if ($requestPath === '/' || $requestPath === '/index.php') {
-    header('Location: ' . BASE_URL . 'ayf', true, 302);
-    exit;
+    $requestPath = '/';
 }
 
 set_exception_handler(function ($e) {
@@ -56,11 +55,18 @@ set_exception_handler(function ($e) {
 });
 
 // ===== SISTEMA AYF (zapatillas) =====
+$router->get('/', [AyfCatalogController::class, 'index']);
 $router->get('/ayf', [AyfCatalogController::class, 'index']);
+$router->get('/categoria/{slug}', [AyfCatalogController::class, 'categoria']);
 $router->get('/ayf/categoria/{slug}', [AyfCatalogController::class, 'categoria']);
+$router->get('/producto/{id}', [AyfCatalogController::class, 'detalle']);
 $router->get('/ayf/producto/{id}', [AyfCatalogController::class, 'detalle']);
+$router->get('/buscar', [AyfCatalogController::class, 'search']);
 $router->get('/ayf/buscar', [AyfCatalogController::class, 'search']);
+$router->get('/api/buscar', [AyfCatalogController::class, 'apiSearch']);
 $router->get('/ayf/api/buscar', [AyfCatalogController::class, 'apiSearch']);
+$router->get('/contacto', [AyfCatalogController::class, 'contacto']);
+$router->post('/contacto', [AyfCatalogController::class, 'contacto']);
 $router->get('/ayf/contacto', [AyfCatalogController::class, 'contacto']);
 $router->post('/ayf/contacto', [AyfCatalogController::class, 'contacto']);
 
