@@ -14,7 +14,16 @@
                     <?php foreach ($banners as $b): ?>
                     <tr>
                         <td><?=$b['id']?></td>
-                        <td><?php if($b['imagen']):?><img src="<?=BASE_URL.$b['imagen']?>" height="40"><?php endif;?></td>
+                        <td><?php if($b['imagen']):
+                            $imgPath = $b['imagen'];
+                            if (strpos($imgPath, 'http://') === 0 || strpos($imgPath, 'https://') === 0) {
+                                $imgUrl = $imgPath;
+                            } elseif (strpos($imgPath, '/') === 0) {
+                                $imgUrl = BASE_URL . ltrim($imgPath, '/');
+                            } else {
+                                $imgUrl = BASE_URL . $imgPath;
+                            }
+                        ?><img src="<?=$imgUrl?>" height="40" style="max-width:120px;object-fit:cover;border-radius:4px;" alt="banner"><?php endif;?></td>
                         <td><?=htmlspecialchars($b['titulo']??'')?></td>
                         <td><?=htmlspecialchars($b['subtitulo']??'')?></td>
                         <td><?=$b['orden']?></td>
