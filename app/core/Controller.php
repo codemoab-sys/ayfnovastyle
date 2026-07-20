@@ -132,8 +132,9 @@ class Controller
         if ($file['error'] !== UPLOAD_ERR_OK) return null;
         if (($file['size'] ?? 0) > 2 * 1024 * 1024) return null;
 
-        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
-        $allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
+        // Only allow JPG/JPEG and PNG uploads
+        $allowed = ['jpg', 'jpeg', 'png'];
+        $allowedMimes = ['image/jpeg', 'image/png'];
 
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (!in_array($ext, $allowed, true)) return null;
