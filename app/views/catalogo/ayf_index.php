@@ -5,7 +5,16 @@
             <?php if (!empty($banners)): ?>
                 <?php foreach ($banners as $b): ?>
                     <div class="swiper-slide">
-                        <div class="hero-slide" style="<?=$b['imagen']?'background-image:url('.BASE_URL.$b['imagen'].')':'background:linear-gradient(135deg,#e63946,#ff6b6b)'?>">
+                        <?php
+                            $imgUrl = $b['imagen'] ? BASE_URL . $b['imagen'] : '';
+                            if ($imgUrl) {
+                                $safe = str_replace("'", "\\'", $imgUrl);
+                                $bgStyle = "background-image:url('" . $safe . "')";
+                            } else {
+                                $bgStyle = "background:linear-gradient(135deg,#e63946,#ff6b6b)";
+                            }
+                        ?>
+                        <div class="hero-slide" style="<?=$bgStyle?>">
                             <div class="hero-overlay"></div>
                             <div class="container hero-content">
                                 <h1><?=htmlspecialchars($b['titulo']??'')?></h1>
