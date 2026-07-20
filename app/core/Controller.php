@@ -192,4 +192,27 @@ class Controller
             }
         }
     }
+
+    protected function normalizeExistingUpload($relPath)
+    {
+        if (!$relPath) return $relPath;
+        if (strpos($relPath, 'public/uploads/') !== 0) return $relPath;
+        $full = __DIR__ . '/../../' . $relPath;
+        if (!file_exists($full)) return $relPath;
+        $folder = basename(dirname($full));
+        $name = basename($full);
+        $base = pathinfo($name, PATHINFO_FILENAME);
+        $ext = pathinfo($name, PATHINFO_EXTENSION);
+        // If base name is already short (< 25 chars) keep it
+        if (strlen($base) <= 25) return $relPath;
+        try { $random = bin2hex(random_bytes(6)); } catch (\Throwable $e) { $random = substr(str_replace('.', '', uniqid('', true)), -12); }
+        $newName = time() . '_' . $random . '.' . ($ext ?: 'jpg');
+        $newRel = 'public/uploads/' . $folder . '/' . $newName;
+        $newFull = __DIR__ . '/../../' . $newRel;
+        if (!is_dir(dirname($newFull))) mkdir(dirname($newFull), 0755, true);
+        if (@rename($full, $newFull)) {
+            return $newRel;
+        }
+        return $relPath;
+    }
 }

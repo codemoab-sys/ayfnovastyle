@@ -354,7 +354,10 @@ class AyfAdminController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = ['titulo' => $_POST['titulo'] ?? '', 'subtitulo' => $_POST['subtitulo'] ?? '', 'link' => $_POST['link'] ?? '', 'orden' => $_POST['orden'] ?? 0, 'estado' => $_POST['estado'] ?? 1];
-            if ($_FILES['imagen']['name']) $data['imagen'] = $this->uploadFile($_FILES['imagen'], 'ayf_banners');
+            if ($_FILES['imagen']['name']) {
+                $data['imagen'] = $this->uploadFile($_FILES['imagen'], 'ayf_banners');
+                $data['imagen'] = $this->normalizeExistingUpload($data['imagen']);
+            }
             (new AyfBanner())->create($data);
             $this->redirect('ayf-admin/banners');
         }
@@ -367,7 +370,11 @@ class AyfAdminController extends Controller
         if (!$banner) { $this->redirect('ayf-admin/banners'); }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = ['titulo' => $_POST['titulo'] ?? '', 'subtitulo' => $_POST['subtitulo'] ?? '', 'link' => $_POST['link'] ?? '', 'orden' => $_POST['orden'] ?? 0, 'estado' => $_POST['estado'] ?? 1];
-            if ($_FILES['imagen']['name']) { $this->deleteFile($banner['imagen']); $data['imagen'] = $this->uploadFile($_FILES['imagen'], 'ayf_banners'); }
+            if ($_FILES['imagen']['name']) {
+                $this->deleteFile($banner['imagen']);
+                $data['imagen'] = $this->uploadFile($_FILES['imagen'], 'ayf_banners');
+                $data['imagen'] = $this->normalizeExistingUpload($data['imagen']);
+            }
             $model->update($id, $data);
             $this->redirect('ayf-admin/banners');
         }
