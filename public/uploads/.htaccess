@@ -1,0 +1,5 @@
+Options -Indexes -ExecCGI
+AddHandler cgi-script .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .hta .htaccess
+<FilesMatch "\.(?!(jpg|jpeg|png|gif|webp|svg|pdf|doc|docx|xls|xlsx|zip)$)[^A-Z]+$">
+    Require all denied
+</FilesMatch>
