@@ -1,7 +1,5 @@
 config/database.local.php
 config/database.php
-public/uploads/*
-!public/uploads/.gitkeep
 .env
 *.log
 .DS_Store
