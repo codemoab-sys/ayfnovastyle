@@ -371,9 +371,12 @@ class AyfAdminController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = ['titulo' => $_POST['titulo'] ?? '', 'subtitulo' => $_POST['subtitulo'] ?? '', 'link' => $_POST['link'] ?? '', 'orden' => $_POST['orden'] ?? 0, 'estado' => $_POST['estado'] ?? 1];
             if ($_FILES['imagen']['name']) {
-                $this->deleteFile($banner['imagen']);
-                $data['imagen'] = $this->uploadFile($_FILES['imagen'], 'ayf_banners');
-                $data['imagen'] = $this->normalizeExistingUpload($data['imagen']);
+                $uploaded = $this->uploadFile($_FILES['imagen'], 'ayf_banners');
+                if ($uploaded) {
+                    // Only delete previous image after new one saved
+                    $this->deleteFile($banner['imagen']);
+                    $data['imagen'] = $this->normalizeExistingUpload($uploaded);
+                }
             }
             $model->update($id, $data);
             $this->redirect('ayf-admin/banners');
