@@ -28,6 +28,20 @@ use App\Controllers\AyfCatalogController;
 
 $router = new Router();
 
+$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
+$basePath = rtrim(dirname($scriptName), '/');
+if ($basePath !== '' && $basePath !== '.' && $basePath !== '/') {
+    if (strpos($requestPath, $basePath) === 0) {
+        $requestPath = substr($requestPath, strlen($basePath));
+    }
+}
+$requestPath = '/' . trim($requestPath, '/');
+if ($requestPath === '/' || $requestPath === '/index.php') {
+    header('Location: ' . BASE_URL . 'ayf', true, 302);
+    exit;
+}
+
 set_exception_handler(function ($e) {
     if (function_exists('error_log')) {
         error_log('[Fatal] ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
@@ -40,49 +54,6 @@ set_exception_handler(function ($e) {
     }
     exit;
 });
-
-// ===== SISTEMA ORIGINAL (Drofar - salud) =====
-$router->get('/', [CatalogController::class, 'index']);
-$router->get('/categoria/{slug}', [CatalogController::class, 'categoria']);
-$router->get('/producto/{id}', [CatalogController::class, 'detalle']);
-$router->get('/buscar', [CatalogController::class, 'search']);
-$router->get('/api/buscar', [CatalogController::class, 'apiSearch']);
-$router->get('/buenas-practicas', [CatalogController::class, 'buenasPracticas']);
-
-$router->get('/admin', [AdminController::class, 'dashboard']);
-$router->post('/admin/login', [AdminController::class, 'login']);
-$router->get('/admin/logout', [AdminController::class, 'logout']);
-$router->get('/admin/familias', [AdminController::class, 'familias']);
-$router->post('/admin/familias/guardar', [AdminController::class, 'familiaGuardar']);
-$router->get('/admin/familias/data/{id}', [AdminController::class, 'familiaData']);
-$router->post('/admin/familias/eliminar/{id}', [AdminController::class, 'familiaDelete']);
-$router->get('/admin/marcas', [AdminController::class, 'marcas']);
-$router->post('/admin/marcas/guardar', [AdminController::class, 'marcaGuardar']);
-$router->get('/admin/marcas/data/{id}', [AdminController::class, 'marcaData']);
-$router->post('/admin/marcas/eliminar/{id}', [AdminController::class, 'marcaDelete']);
-$router->get('/admin/productos', [AdminController::class, 'productos']);
-$router->get('/admin/productos/crear', [AdminController::class, 'productoCreate']);
-$router->post('/admin/productos/crear', [AdminController::class, 'productoCreate']);
-$router->get('/admin/productos/editar/{id}', [AdminController::class, 'productoEdit']);
-$router->post('/admin/productos/editar/{id}', [AdminController::class, 'productoEdit']);
-$router->post('/admin/productos/eliminar/{id}', [AdminController::class, 'productoDelete']);
-$router->post('/admin/productos/eliminar-galeria/{id}', [AdminController::class, 'productoDeleteGaleria']);
-$router->get('/admin/banners', [AdminController::class, 'banners']);
-$router->get('/admin/banners/crear', [AdminController::class, 'bannerCreate']);
-$router->post('/admin/banners/crear', [AdminController::class, 'bannerCreate']);
-$router->get('/admin/banners/editar/{id}', [AdminController::class, 'bannerEdit']);
-$router->post('/admin/banners/editar/{id}', [AdminController::class, 'bannerEdit']);
-$router->post('/admin/banners/eliminar/{id}', [AdminController::class, 'bannerDelete']);
-$router->get('/admin/usuarios', [AdminController::class, 'usuarios']);
-$router->get('/admin/usuarios/crear', [AdminController::class, 'usuarioCreate']);
-$router->post('/admin/usuarios/crear', [AdminController::class, 'usuarioCreate']);
-$router->get('/admin/usuarios/editar/{id}', [AdminController::class, 'usuarioEdit']);
-$router->post('/admin/usuarios/editar/{id}', [AdminController::class, 'usuarioEdit']);
-$router->post('/admin/usuarios/eliminar/{id}', [AdminController::class, 'usuarioDelete']);
-$router->get('/admin/buenas-practicas', [AdminController::class, 'buenasPracticas']);
-$router->post('/admin/buenas-practicas/guardar', [AdminController::class, 'buenaPracticaGuardar']);
-$router->get('/admin/buenas-practicas/data/{id}', [AdminController::class, 'buenaPracticaData']);
-$router->post('/admin/buenas-practicas/eliminar/{id}', [AdminController::class, 'buenaPracticaDelete']);
 
 // ===== SISTEMA AYF (zapatillas) =====
 $router->get('/ayf', [AyfCatalogController::class, 'index']);

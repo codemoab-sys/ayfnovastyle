@@ -8,3 +8,11 @@
     php_value ignore_repeated_errors On
     php_value ignore_repeat_source On
 </IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /CATALOGO/ayfnovastyle/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.php [L,QSA]
+</IfModule>

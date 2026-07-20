@@ -27,12 +27,15 @@ class Router
 
     public function dispatch()
     {
-        $method = $_SERVER['REQUEST_METHOD'];
-        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+        $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
 
-        $base = dirname($_SERVER['SCRIPT_NAME']);
-        if ($base !== '/') {
-            $uri = substr($uri, strlen($base));
+        $basePath = rtrim(dirname($scriptName), '/');
+        if ($basePath !== '' && $basePath !== '.' && $basePath !== '/') {
+            if (strpos($uri, $basePath) === 0) {
+                $uri = substr($uri, strlen($basePath));
+            }
         }
         $uri = '/' . trim($uri, '/');
 
