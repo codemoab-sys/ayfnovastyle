@@ -144,9 +144,14 @@ class Controller
         if ($finfo) finfo_close($finfo);
         if ($mime === false || !in_array($mime, $allowedMimes, true)) return null;
 
-        $baseName = preg_replace('/[^a-zA-Z0-9._-]/', '', pathinfo($file['name'], PATHINFO_FILENAME));
-        $baseName = $baseName !== '' ? $baseName : 'upload';
-        $filename = $baseName . '_' . uniqid('', true) . '_' . time() . '.' . $ext;
+        // Generate a short, unique and safe filename: <timestamp>_<hex12>.<ext>
+        try {
+            $random = bin2hex(random_bytes(6)); // 12 hex chars
+        } catch (\Throwable $e) {
+            // Fallback to uniqid-derived string if random_bytes unavailable
+            $random = substr(str_replace('.', '', uniqid('', true)), -12);
+        }
+        $filename = time() . '_' . $random . '.' . $ext;
         $targetDir = __DIR__ . '/../../public/uploads/' . $folder . '/';
 
         if (!is_dir($targetDir)) {
