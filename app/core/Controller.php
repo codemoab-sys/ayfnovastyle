@@ -152,8 +152,27 @@ class Controller
             mkdir($targetDir, 0755, true);
         }
 
-        if (move_uploaded_file($file['tmp_name'], $targetDir . $filename)) {
-            return 'public/uploads/' . $folder . '/' . $filename;
+        $tempPath = $targetDir . $filename;
+        if (move_uploaded_file($file['tmp_name'], $tempPath)) {
+            $storedName = $filename;
+            $storedExt = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            if (in_array($storedExt, ['avif', 'webp', 'png', 'gif', 'jpg', 'jpeg'], true) && function_exists('imagecreatefromstring') && function_exists('imagejpeg')) {
+                $image = @imagecreatefromstring(file_get_contents($tempPath));
+                if ($image !== false) {
+                    $jpgName = preg_replace('/\.[^.]+$/', '.jpg', $filename);
+                    $jpgPath = $targetDir . $jpgName;
+                    $converted = imagecreatetruecolor(imagesx($image), imagesy($image));
+                    if ($converted !== false) {
+                        imagecopy($converted, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+                        imagejpeg($converted, $jpgPath, 90);
+                        imagedestroy($image);
+                        imagedestroy($converted);
+                        @unlink($tempPath);
+                        $storedName = $jpgName;
+                    }
+                }
+            }
+            return 'public/uploads/' . $folder . '/' . $storedName;
         }
         return null;
     }
