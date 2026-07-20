@@ -1,0 +1,10 @@
+<IfModule mod_php5.c>
+    php_value display_errors Off
+    php_value display_startup_errors Off
+    php_value html_errors Off
+    php_flag log_errors On
+    php_value log_errors On
+    php_value error_log logs/php_errors.log
+    php_value ignore_repeated_errors On
+    php_value ignore_repeat_source On
+</IfModule>
