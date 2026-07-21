@@ -5,7 +5,6 @@
         if (!s) return;
         var sl = s.querySelectorAll('.swiper-slide');
         if (sl.length < 1) return;
-        sl[0].classList.add('active');
         if (sl.length === 1) {
             s.querySelector('.swiper-pagination') && (s.querySelector('.swiper-pagination').style.display = 'none');
             s.querySelector('.swiper-button-next') && (s.querySelector('.swiper-button-next').style.display = 'none');
@@ -13,11 +12,11 @@
             return;
         }
         var cur = 0;
-        sl[0].classList.add('active');
+        for (var i = 1; i < sl.length; i++) sl[i].style.display = 'none';
         function go(n) {
-            for (var i = 0; i < sl.length; i++) sl[i].classList.remove('active');
+            for (var i = 0; i < sl.length; i++) sl[i].style.display = 'none';
             cur = (n + sl.length) % sl.length;
-            sl[cur].classList.add('active');
+            sl[cur].style.display = '';
         }
         var nb = s.querySelector('.swiper-button-next');
         var pb = s.querySelector('.swiper-button-prev');
