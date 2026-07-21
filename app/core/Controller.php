@@ -116,6 +116,9 @@ class Controller
 
     protected function redirect($url)
     {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_write_close();
+        }
         header('Location: ' . BASE_URL . $url);
         exit;
     }
