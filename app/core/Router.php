@@ -55,6 +55,11 @@ class Router
         if (function_exists('error_log')) {
             error_log("[Router] 404: {$method} {$uri}");
         }
-        echo '<h1>404 — Página no encontrada</h1>';
+        $view = __DIR__ . '/../views/errors/404.php';
+        if (file_exists($view)) {
+            require $view;
+        } else {
+            echo '<h1>404 — Página no encontrada</h1>';
+        }
     }
 }
