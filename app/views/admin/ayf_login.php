@@ -12,7 +12,11 @@
     <div class="login-container">
         <div class="login-card">
             <div class="text-center mb-4">
-                <i class="bi bi-shop display-1 text-primary"></i>
+                <?php
+                $logo = '';
+                try { $rows = (new \App\Models\AyfConfiguracion())->allAsArray(); foreach ($rows as $r) { if ($r['clave'] === 'logo') { $logo = $r['valor']; break; } } } catch (\Throwable $e) {}
+                ?>
+                <?php if ($logo): ?><img src="<?=BASE_URL.$logo?>" alt="Logo" style="max-height:80px;margin-bottom:10px"><?php endif; ?>
                 <h2 class="mt-2">AYF Novastyle</h2>
                 <p class="text-muted">Panel de Administración</p>
             </div>
