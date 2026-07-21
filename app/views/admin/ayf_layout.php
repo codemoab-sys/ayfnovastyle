@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="<?= BASE_URL ?>public/css/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/admin.css?v=<?= ASSET_VERSION ?>">
 </head>
 <body>
@@ -61,8 +61,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<?php if ($flashData): ?><script><?= $flashData ?></script><?php endif; ?>
+<script src="<?= BASE_URL ?>public/js/sweetalert2.min.js"></script>
 <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 <script>
 (function() {
