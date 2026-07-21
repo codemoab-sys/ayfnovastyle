@@ -62,7 +62,11 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<?php if (!empty($swalToast)): ?><script>Swal.fire({icon:'<?=$swalToast['icon']?>',title:'Éxito',text:'<?=$swalToast['text']?>',timer:3000,showConfirmButton:false});</script><?php endif; ?>
+<?php if (!empty($swalToast)): ?>
+<script>
+(function(){var m='<?=$swalToast['text']?>';if(typeof Swal!=='undefined'){Swal.fire({icon:'<?=$swalToast['icon']?>',title:'Éxito',text:m,timer:3000,showConfirmButton:false})}else{var d=document.createElement('div');d.style.cssText='position:fixed;top:20px;right:20px;z-index:9999;background:#198754;color:#fff;padding:16px 24px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.2);font-size:15px;max-width:400px';d.textContent=m;document.body.appendChild(d);setTimeout(function(){d.style.transition='opacity .5s';d.style.opacity='0';setTimeout(function(){d.remove()},500)},3000)}})();
+</script>
+<?php endif; ?>
 <script>const BASE_URL = '<?= BASE_URL ?>';</script>
 <script>
 (function() {
