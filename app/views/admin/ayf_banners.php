@@ -55,4 +55,7 @@
         <?php endif; ?>
     </div>
 </div>
+<?php if (!empty($message)): ?>
+<script>Swal.fire({icon:'success',title:'Éxito',text:'<?=addslashes($message)?>',timer:3000,showConfirmButton:false});</script>
+<?php endif; ?>
 <?php $content = ob_get_clean(); $title = 'Banners'; require __DIR__.'/ayf_layout.php'; ?>
