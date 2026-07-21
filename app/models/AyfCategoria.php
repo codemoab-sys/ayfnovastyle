@@ -19,7 +19,7 @@ class AyfCategoria extends Model
 
     public static function slugify($text)
     {
-        $text = mb_strtolower($text, 'UTF-8');
+        $text = function_exists('mb_strtolower') ? mb_strtolower($text, 'UTF-8') : strtolower($text);
         $text = str_replace(
             ['á','é','í','ó','ú','ü','ñ','Á','É','Í','Ó','Ú','Ü','Ñ'],
             ['a','e','i','o','u','u','n','a','e','i','o','u','u','n'],
