@@ -138,7 +138,7 @@ $(function() {
                     if (input.is('select')) input.val(val);
                     else if (input.is('textarea')) input.val(val);
                     else if (input.attr('type') === 'color') input.val(val || '#009933');
-                    else input.val(val);
+                    else if (input.attr('type') !== 'file') input.val(val);
                 }
             });
             // Show current images
