@@ -82,7 +82,7 @@ class Controller
             header('X-Frame-Options: SAMEORIGIN');
             header('Referrer-Policy: no-referrer-when-downgrade');
             header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
-            $csp = "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com https://fonts.googleapis.com; connect-src 'self'; frame-ancestors 'self'; form-action 'self' https:; upgrade-insecure-requests";
+            $csp = "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com https://fonts.googleapis.com; connect-src 'self' https://cdn.jsdelivr.net; frame-ancestors 'self'; form-action 'self' https:; upgrade-insecure-requests";
             header('Content-Security-Policy: ' . $csp);
         }
 
