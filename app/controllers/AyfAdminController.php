@@ -379,6 +379,7 @@ class AyfAdminController extends Controller
 
     public function bannerCreate()
     {
+        $error = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($_POST)) {
                 $this->redirect('ayf-admin/banners/crear');
@@ -394,18 +395,25 @@ class AyfAdminController extends Controller
                 $uploaded = $this->uploadFile($_FILES['imagen'], 'ayf_banners');
                 if ($uploaded) {
                     $data['imagen'] = $this->normalizeExistingUpload($uploaded);
+                } else {
+                    $error = $this->getLastUploadError();
                 }
+            } else {
+                $error = 'Debe seleccionar una imagen.';
             }
-            (new AyfBanner())->create($data);
-            $this->redirect('ayf-admin/banners');
+            if (!$error && $data['imagen']) {
+                (new AyfBanner())->create($data);
+                $this->redirect('ayf-admin/banners');
+            }
         }
-        $this->render('admin/ayf_banner_form');
+        $this->render('admin/ayf_banner_form', ['error' => $error, 'formData' => $data ?? []]);
     }
 
     public function bannerEdit($id)
     {
         $model = new AyfBanner(); $banner = $model->find($id);
         if (!$banner) { $this->redirect('ayf-admin/banners'); }
+        $error = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($_POST)) {
                 $this->redirect('ayf-admin/banners/editar/' . $id);
@@ -422,15 +430,19 @@ class AyfAdminController extends Controller
                 if ($uploaded) {
                     $this->deleteFile($banner['imagen']);
                     $data['imagen'] = $this->normalizeExistingUpload($uploaded);
+                } else {
+                    $error = $this->getLastUploadError();
                 }
             } elseif (!empty($_POST['eliminar_imagen'])) {
                 $this->deleteFile($banner['imagen']);
                 $data['imagen'] = '';
             }
-            $model->update($id, $data);
-            $this->redirect('ayf-admin/banners');
+            if (!$error) {
+                $model->update($id, $data);
+                $this->redirect('ayf-admin/banners');
+            }
         }
-        $this->render('admin/ayf_banner_form', ['banner' => $banner]);
+        $this->render('admin/ayf_banner_form', ['banner' => $banner, 'error' => $error]);
     }
 
     public function bannerDelete($id)

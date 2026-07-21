@@ -6,7 +6,13 @@
 </div>
 <div class="card">
     <div class="card-body">
-        <form method="POST" enctype="multipart/form-data" action="<?= $isEdit ? BASE_URL.'ayf-admin/banners/editar/'.$banner['id'] : BASE_URL.'ayf-admin/banners/crear' ?>">
+        <?php if (!empty($error)): ?>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i> <?=htmlspecialchars($error)?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<?php endif; ?>
+<form method="POST" enctype="multipart/form-data" action="<?= $isEdit ? BASE_URL.'ayf-admin/banners/editar/'.$banner['id'] : BASE_URL.'ayf-admin/banners/crear' ?>">
             <?= csrf_field() ?>
             <div class="row g-3">
                 <div class="col-md-6"><label class="form-label">Título</label><input type="text" name="titulo" class="form-control" value="<?=htmlspecialchars($banner['titulo']??'')?>"></div>
