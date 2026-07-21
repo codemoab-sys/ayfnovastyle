@@ -80,7 +80,7 @@ body {
 
 /* ===== HERO ===== */
 .hero-section { position:relative; height:85vh; min-height:500px; }
-.hero-section .swiper { height:100%; }
+.hero-section .swiper { height:100%; overflow:hidden; }
 .hero-section .swiper-wrapper,
 .hero-section .swiper-slide { height:100%; }
 .hero-slide {
@@ -88,7 +88,10 @@ body {
     background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     position:relative; background-size:cover; background-position:center;
     overflow:hidden;
+    opacity:0; transition:opacity .6s ease, transform .6s ease; transform:scale(1.03);
+    pointer-events:none;
 }
+.hero-slide.active { opacity:1; transform:scale(1); pointer-events:auto; }
 
 .hero-overlay { position:absolute; inset:0; background:linear-gradient(to right, rgba(0,0,0,0.4), rgba(0,0,0,0.1)); }
 .hero-content { position:relative; z-index:2; max-width:700px; }

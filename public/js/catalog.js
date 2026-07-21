@@ -12,11 +12,11 @@
             return;
         }
         var cur = 0;
-        for (var i = 1; i < sl.length; i++) sl[i].style.display = 'none';
+        sl[0].classList.add('active');
         function go(n) {
-            for (var i = 0; i < sl.length; i++) sl[i].style.display = 'none';
+            for (var i = 0; i < sl.length; i++) sl[i].classList.remove('active');
             cur = (n + sl.length) % sl.length;
-            sl[cur].style.display = '';
+            sl[cur].classList.add('active');
         }
         var nb = s.querySelector('.swiper-button-next');
         var pb = s.querySelector('.swiper-button-prev');
