@@ -169,12 +169,14 @@ class Controller
                     $jpgPath = $targetDir . $jpgName;
                     $converted = imagecreatetruecolor(imagesx($image), imagesy($image));
                     if ($converted !== false) {
-                        imagecopy($converted, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-                        imagejpeg($converted, $jpgPath, 90);
+                        $copyOk = imagecopy($converted, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+                        $jpegOk = $copyOk && imagejpeg($converted, $jpgPath, 90);
                         imagedestroy($image);
                         imagedestroy($converted);
-                        @unlink($tempPath);
-                        $storedName = $jpgName;
+                        if ($jpegOk) {
+                            @unlink($tempPath);
+                            $storedName = $jpgName;
+                        }
                     }
                 }
             }
