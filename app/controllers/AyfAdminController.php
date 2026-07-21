@@ -414,6 +414,7 @@ class AyfAdminController extends Controller
         $model = new AyfBanner(); $banner = $model->find($id);
         if (!$banner) { $this->redirect('ayf-admin/banners'); }
         $error = '';
+        $debug = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($_POST)) {
                 $this->redirect('ayf-admin/banners/editar/' . $id);
@@ -442,7 +443,9 @@ class AyfAdminController extends Controller
                 $this->redirect('ayf-admin/banners');
             }
         }
-        $this->render('admin/ayf_banner_form', ['banner' => $banner, 'error' => $error]);
+        $targetDir = __DIR__ . '/../../public/uploads/ayf_banners/';
+        $debug = "TargetDir: <code>{$targetDir}</code><br>Existe: " . (is_dir($targetDir) ? '✅ Si' : '❌ No') . "<br>Escribible: " . (is_dir($targetDir) && is_writable($targetDir) ? '✅ Si' : '❌ No');
+        $this->render('admin/ayf_banner_form', ['banner' => $banner, 'error' => $error, 'debug' => $debug]);
     }
 
     public function bannerDelete($id)

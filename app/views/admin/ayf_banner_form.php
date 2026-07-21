@@ -12,6 +12,9 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 <?php endif; ?>
+<?php if (!empty($debug)): ?>
+<div class="alert alert-info small"><?=$debug?></div>
+<?php endif; ?>
 <form method="POST" enctype="multipart/form-data" action="<?= $isEdit ? BASE_URL.'ayf-admin/banners/editar/'.$banner['id'] : BASE_URL.'ayf-admin/banners/crear' ?>">
             <?= csrf_field() ?>
             <div class="row g-3">
