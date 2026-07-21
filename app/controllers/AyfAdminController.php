@@ -369,11 +369,13 @@ class AyfAdminController extends Controller
     {
         $page = $_GET['page'] ?? 1;
         list($items, $total, $currentPage, $totalPages) = $this->paginate(new AyfBanner(), $page, 15, 'orden ASC');
+        $msgMap = ['ok' => 'Banner guardado correctamente.', 'del_ok' => 'Banner eliminado correctamente.'];
         $this->render('admin/ayf_banners', [
             'banners' => $items,
             'totalBanners' => $total,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
+            'message' => $msgMap[$_GET['msg'] ?? ''] ?? '',
         ]);
     }
 
@@ -403,7 +405,7 @@ class AyfAdminController extends Controller
             }
             if (!$error && $data['imagen']) {
                 (new AyfBanner())->create($data);
-                $this->redirect('ayf-admin/banners');
+                $this->redirect('ayf-admin/banners?msg=ok');
             }
         }
         $this->render('admin/ayf_banner_form', ['error' => $error, 'formData' => $data ?? []]);
@@ -440,7 +442,7 @@ class AyfAdminController extends Controller
             }
             if (!$error) {
                 $model->update($id, $data);
-                $this->redirect('ayf-admin/banners');
+                $this->redirect('ayf-admin/banners?msg=ok');
             }
         }
         $targetDir = __DIR__ . '/../../public/uploads/ayf_banners/';

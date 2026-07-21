@@ -1,4 +1,10 @@
 <?php ob_start(); ?>
+<?php if (!empty($message)): ?>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle me-2"></i> <?=htmlspecialchars($message)?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<?php endif; ?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Banners</h2>
     <div>
