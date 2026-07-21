@@ -162,6 +162,7 @@ $AYF_YOUTUBE = $c['youtube'] ?? '';
         <hr class="border-secondary my-4">
         <div class="text-center text-white-50 small">
             &copy; <?= date('Y') ?> <?= $AYF_SITE_NAME ?>. Todos los derechos reservados.
+            <br>Desarrollada por <a href="https://www.moabcode.com" target="_blank" class="text-white-50">MOABCODE</a>
         </div>
     </div>
 </footer>
