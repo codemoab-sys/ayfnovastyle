@@ -71,6 +71,7 @@ $router->get('/ayf/contacto', [AyfCatalogController::class, 'contacto']);
 $router->post('/ayf/contacto', [AyfCatalogController::class, 'contacto']);
 
 $router->get('/ayf-admin', [AyfAdminController::class, 'dashboard']);
+$router->get('/ayf-admin/login', [AyfAdminController::class, 'login']);
 $router->post('/ayf-admin/login', [AyfAdminController::class, 'login']);
 $router->get('/ayf-admin/logout', [AyfAdminController::class, 'logout']);
 $router->get('/ayf-admin/categorias', [AyfAdminController::class, 'categorias']);
