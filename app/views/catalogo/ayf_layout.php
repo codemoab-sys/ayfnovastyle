@@ -25,6 +25,7 @@ $AYF_YOUTUBE = $c['youtube'] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'Inicio' ?> | <?= $AYF_SITE_NAME ?></title>
+    <link rel="icon" href="<?= BASE_URL ?>favicon.ico" type="image/x-icon">
     <meta name="description" content="<?= $AYF_SITE_DESC ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
