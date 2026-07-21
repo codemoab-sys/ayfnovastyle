@@ -83,6 +83,12 @@ body {
 .hero-section .swiper { height:100%; overflow:hidden; }
 .hero-section .swiper-wrapper,
 .hero-section .swiper-slide { height:100%; }
+.hero-section .swiper-wrapper { position:relative; }
+.hero-section .swiper-slide {
+    position:absolute; inset:0; width:100% !important;
+    opacity:0; transition:opacity .5s ease; pointer-events:none;
+}
+.hero-section .swiper-slide:first-child { opacity:1; pointer-events:auto; }
 .hero-slide {
     height:100%; display:flex; align-items:center;
     background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
