@@ -165,33 +165,36 @@ class Controller
         if (!is_writable($targetDir)) { $this->lastUploadError = 'El directorio de subida no tiene permisos de escritura.'; return null; }
 
         $tempPath = $targetDir . $filename;
-        if (move_uploaded_file($file['tmp_name'], $tempPath)) {
-            $storedName = $filename;
-            $storedExt = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            if ($storedExt !== 'webp' && in_array($storedExt, ['avif', 'webp', 'png', 'gif', 'jpg', 'jpeg'], true) && function_exists('imagecreatefromstring') && function_exists('imagejpeg')) {
-                $image = @imagecreatefromstring(file_get_contents($tempPath));
-                if ($image !== false) {
-                    $jpgName = preg_replace('/\.[^.]+$/', '.jpg', $filename);
-                    $jpgPath = $targetDir . $jpgName;
-                    $converted = imagecreatetruecolor(imagesx($image), imagesy($image));
-                    if ($converted !== false) {
-                        $copyOk = imagecopy($converted, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-                        $jpegOk = $copyOk && imagejpeg($converted, $jpgPath, 90);
-                        imagedestroy($image);
-                        imagedestroy($converted);
-                        if ($jpegOk) {
-                            @unlink($tempPath);
-                            $storedName = $jpgName;
-                        } else {
-                            $this->lastUploadError = 'La conversión a JPG falló (posible memoria insuficiente).';
-                        }
+        if (!copy($file['tmp_name'], $tempPath)) {
+            $this->lastUploadError = 'Error al copiar el archivo subido (comprobar permisos del directorio).';
+            return null;
+        }
+        if (!file_exists($tempPath) || filesize($tempPath) === 0) {
+            $this->lastUploadError = 'El archivo se copió pero no se encuentra en el directorio de destino.';
+            @unlink($tempPath);
+            return null;
+        }
+        $storedName = $filename;
+        $storedExt = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        if ($storedExt !== 'webp' && in_array($storedExt, ['avif', 'webp', 'png', 'gif', 'jpg', 'jpeg'], true) && function_exists('imagecreatefromstring') && function_exists('imagejpeg')) {
+            $image = @imagecreatefromstring(file_get_contents($tempPath));
+            if ($image !== false) {
+                $jpgPath = $targetDir . preg_replace('/\.[^.]+$/', '.jpg', $filename);
+                $converted = imagecreatetruecolor(imagesx($image), imagesy($image));
+                if ($converted !== false) {
+                    $copyOk = imagecopy($converted, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+                    $jpegOk = $copyOk && imagejpeg($converted, $jpgPath, 90);
+                    if ($jpegOk) {
+                        $storedName = preg_replace('/\.[^.]+$/', '.jpg', $filename);
+                    } else {
+                        $this->lastUploadError = 'La conversión a JPG falló (posible memoria insuficiente).';
                     }
                 }
+                imagedestroy($image);
+                if ($converted) imagedestroy($converted);
             }
-            return 'public/uploads/' . $folder . '/' . $storedName;
         }
-        $this->lastUploadError = 'Error al mover el archivo subido (comprobar permisos del directorio).';
-        return null;
+        return 'public/uploads/' . $folder . '/' . $storedName;
     }
 
     protected $lastUploadError = '';
