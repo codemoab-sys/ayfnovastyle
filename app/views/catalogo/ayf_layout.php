@@ -159,6 +159,7 @@ $AYF_YOUTUBE = $c['youtube'] ?? '';
         <div class="text-center text-white-50 small">
             &copy; <?= date('Y') ?> <?= $AYF_SITE_NAME ?>. Todos los derechos reservados.
             <br>Desarrollada por <a href="https://www.moabcode.com" target="_blank" class="text-white-50">MOABCODE</a>
+            <a href="<?= BASE_URL ?>ayf-admin/login" class="text-white-50 ms-2 text-decoration-none" title="Admin"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 2C8.13 2 5 5.13 5 9v2c-1.1 0-2 .9-2 2v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2V9c0-3.87-3.13-7-7-7zm0 10c1.1 0 2 .9 2 2s-.9 2-2 2c-1.1 0-2-.9-2-2s.9-2 2-2z"/></svg></a>
         </div>
     </div>
 </footer>
