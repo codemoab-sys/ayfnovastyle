@@ -132,9 +132,9 @@ class Controller
         if ($file['error'] !== UPLOAD_ERR_OK) return null;
         if (($file['size'] ?? 0) > 2 * 1024 * 1024) return null;
 
-        // Only allow JPG/JPEG and PNG uploads
-        $allowed = ['jpg', 'jpeg', 'png'];
-        $allowedMimes = ['image/jpeg', 'image/png'];
+        // Allowed image formats
+        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
 
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (!in_array($ext, $allowed, true)) return null;
@@ -162,7 +162,7 @@ class Controller
         if (move_uploaded_file($file['tmp_name'], $tempPath)) {
             $storedName = $filename;
             $storedExt = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            if (in_array($storedExt, ['avif', 'webp', 'png', 'gif', 'jpg', 'jpeg'], true) && function_exists('imagecreatefromstring') && function_exists('imagejpeg')) {
+            if ($storedExt !== 'webp' && in_array($storedExt, ['avif', 'webp', 'png', 'gif', 'jpg', 'jpeg'], true) && function_exists('imagecreatefromstring') && function_exists('imagejpeg')) {
                 $image = @imagecreatefromstring(file_get_contents($tempPath));
                 if ($image !== false) {
                     $jpgName = preg_replace('/\.[^.]+$/', '.jpg', $filename);
