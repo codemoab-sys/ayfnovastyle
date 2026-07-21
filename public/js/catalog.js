@@ -4,7 +4,13 @@
         var s = document.querySelector('.heroSwiper');
         if (!s) return;
         var sl = s.querySelectorAll('.swiper-slide');
-        if (sl.length < 2) return;
+        if (sl.length < 1) return;
+        if (sl.length === 1) {
+            s.querySelector('.swiper-pagination') && (s.querySelector('.swiper-pagination').style.display = 'none');
+            s.querySelector('.swiper-button-next') && (s.querySelector('.swiper-button-next').style.display = 'none');
+            s.querySelector('.swiper-button-prev') && (s.querySelector('.swiper-button-prev').style.display = 'none');
+            return;
+        }
         var cur = 0;
         for (var i = 1; i < sl.length; i++) sl[i].style.display = 'none';
         function go(n) {
