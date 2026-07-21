@@ -144,12 +144,24 @@ class AyfAdminController extends Controller
         ];
         if ($id) {
             $f = $model->find($id);
-            if ($_FILES['imagen']['name']) { $this->deleteFile($f['imagen']); $data['imagen'] = $this->uploadFile($_FILES['imagen'], 'ayf_categorias'); }
-            if ($_FILES['icono']['name']) { $this->deleteFile($f['icono']); $data['icono'] = $this->uploadFile($_FILES['icono'], 'ayf_categorias'); }
+            if (isset($_FILES['imagen']) && $_FILES['imagen']['name']) {
+                $uploaded = $this->uploadFile($_FILES['imagen'], 'ayf_categorias');
+                if ($uploaded) { $this->deleteFile($f['imagen']); $data['imagen'] = $uploaded; }
+            }
+            if (isset($_FILES['icono']) && $_FILES['icono']['name']) {
+                $uploaded = $this->uploadFile($_FILES['icono'], 'ayf_categorias');
+                if ($uploaded) { $this->deleteFile($f['icono']); $data['icono'] = $uploaded; }
+            }
             $model->update($id, $data);
         } else {
-            if ($_FILES['imagen']['name']) $data['imagen'] = $this->uploadFile($_FILES['imagen'], 'ayf_categorias');
-            if ($_FILES['icono']['name']) $data['icono'] = $this->uploadFile($_FILES['icono'], 'ayf_categorias');
+            if (isset($_FILES['imagen']) && $_FILES['imagen']['name']) {
+                $uploaded = $this->uploadFile($_FILES['imagen'], 'ayf_categorias');
+                if ($uploaded) $data['imagen'] = $uploaded;
+            }
+            if (isset($_FILES['icono']) && $_FILES['icono']['name']) {
+                $uploaded = $this->uploadFile($_FILES['icono'], 'ayf_categorias');
+                if ($uploaded) $data['icono'] = $uploaded;
+            }
             $model->create($data);
         }
         $this->json(['ok' => true]);
@@ -193,10 +205,16 @@ class AyfAdminController extends Controller
         ];
         if ($id) {
             $m = $model->find($id);
-            if ($_FILES['logo']['name']) { $this->deleteFile($m['logo']); $data['logo'] = $this->uploadFile($_FILES['logo'], 'ayf_marcas'); }
+            if (isset($_FILES['logo']) && $_FILES['logo']['name']) {
+                $uploaded = $this->uploadFile($_FILES['logo'], 'ayf_marcas');
+                if ($uploaded) { $this->deleteFile($m['logo']); $data['logo'] = $uploaded; }
+            }
             $model->update($id, $data);
         } else {
-            if ($_FILES['logo']['name']) $data['logo'] = $this->uploadFile($_FILES['logo'], 'ayf_marcas');
+            if (isset($_FILES['logo']) && $_FILES['logo']['name']) {
+                $uploaded = $this->uploadFile($_FILES['logo'], 'ayf_marcas');
+                if ($uploaded) $data['logo'] = $uploaded;
+            }
             $model->create($data);
         }
         $this->json(['ok' => true]);
@@ -245,7 +263,10 @@ class AyfAdminController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $model = new AyfProducto();
             $data = $this->productoDataFromPost();
-            if ($_FILES['imagen_principal']['name']) $data['imagen_principal'] = $this->uploadFile($_FILES['imagen_principal'], 'ayf_productos');
+            if (isset($_FILES['imagen_principal']) && $_FILES['imagen_principal']['name']) {
+                $uploaded = $this->uploadFile($_FILES['imagen_principal'], 'ayf_productos');
+                if ($uploaded) $data['imagen_principal'] = $uploaded;
+            }
             $id = $model->create($data);
             $this->uploadGaleria($id, $_FILES['galeria'] ?? null);
             $this->redirect('ayf-admin/productos');
@@ -263,7 +284,13 @@ class AyfAdminController extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = $this->productoDataFromPost();
-            if ($_FILES['imagen_principal']['name']) { $this->deleteFile($producto['imagen_principal']); $data['imagen_principal'] = $this->uploadFile($_FILES['imagen_principal'], 'ayf_productos'); }
+            if (isset($_FILES['imagen_principal']) && $_FILES['imagen_principal']['name']) {
+                $uploaded = $this->uploadFile($_FILES['imagen_principal'], 'ayf_productos');
+                if ($uploaded) {
+                    $this->deleteFile($producto['imagen_principal']);
+                    $data['imagen_principal'] = $uploaded;
+                }
+            }
             $model->update($id, $data);
             $this->uploadGaleria($id, $_FILES['galeria'] ?? null);
             $this->redirect('ayf-admin/productos');
