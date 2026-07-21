@@ -43,18 +43,13 @@
     <main class="main-content flex-grow-1">
         <div class="d-md-none" style="height:54px"></div>
         <div class="p-4">
-        <?php if (!empty($_SESSION['_flash']['upload_error'])): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i> <?= htmlspecialchars($_SESSION['_flash']['upload_error']) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php unset($_SESSION['_flash']['upload_error']); endif; ?>
-        <?php if (!empty($_SESSION['_flash']['success'])): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i> <?= htmlspecialchars($_SESSION['_flash']['success']) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php unset($_SESSION['_flash']['success']); endif; ?>
+        <?php
+            $flashMsg = '';
+            $flashType = '';
+            if (!empty($_SESSION['_flash']['upload_error'])) { $flashMsg = $_SESSION['_flash']['upload_error']; $flashType = 'error'; unset($_SESSION['_flash']['upload_error']); }
+            elseif (!empty($_SESSION['_flash']['success'])) { $flashMsg = $_SESSION['_flash']['success']; $flashType = 'success'; unset($_SESSION['_flash']['success']); }
+        ?>
+        <?php if ($flashMsg): ?><script>Swal.fire({icon:'<?=$flashType?>',title:'<?=$flashType==='error'?'Error':'Éxito'?>',text:'<?=addslashes($flashMsg)?>',timer:5000,showConfirmButton:true,confirmButtonText:'OK',confirmButtonColor:'#e63946'});</script><?php endif; ?>
         <?= $content ?? '' ?>
         </div>
     </main>
