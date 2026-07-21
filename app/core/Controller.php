@@ -128,21 +128,25 @@ class Controller
 
     protected function uploadFile($file, $folder = 'productos')
     {
-        if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) return null;
-        if ($file['error'] !== UPLOAD_ERR_OK) return null;
-        if (($file['size'] ?? 0) > 2 * 1024 * 1024) return null;
+        if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) { $this->setFlash('upload_error', 'No se recibió el archivo.'); return null; }
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $errors = [1=>'El archivo excede upload_max_filesize (PHP).', 2=>'El archivo excede el tamaño máximo permitido.', 3=>'El archivo se subió parcialmente.', 4=>'No se seleccionó ningún archivo.', 6=>'Falta carpeta temporal.', 7=>'Error al escribir el archivo.', 8=>'Extensión rechazada.'];
+            $this->setFlash('upload_error', $errors[$file['error']] ?? 'Error de subida desconocido.');
+            return null;
+        }
+        if (($file['size'] ?? 0) > 2 * 1024 * 1024) { $this->setFlash('upload_error', 'El archivo supera los 2MB permitidos.'); return null; }
 
         // Allowed image formats
         $allowed = ['jpg', 'jpeg', 'png', 'webp'];
         $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
 
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        if (!in_array($ext, $allowed, true)) return null;
+        if (!in_array($ext, $allowed, true)) { $this->setFlash('upload_error', 'Formato de archivo no permitido (solo JPG, PNG, WebP).'); return null; }
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = $finfo ? finfo_file($finfo, $file['tmp_name']) : false;
         if ($finfo) finfo_close($finfo);
-        if ($mime === false || !in_array($mime, $allowedMimes, true)) return null;
+        if ($mime === false || !in_array($mime, $allowedMimes, true)) { $this->setFlash('upload_error', 'El tipo MIME del archivo no coincide con una imagen válida (recibido: ' . ($mime ?: 'desconocido') . ').'); return null; }
 
         // Generate a short, unique and safe filename: <timestamp>_<hex12>.<ext>
         try {
@@ -155,8 +159,9 @@ class Controller
         $targetDir = __DIR__ . '/../../public/uploads/' . $folder . '/';
 
         if (!is_dir($targetDir)) {
-            mkdir($targetDir, 0755, true);
+            if (!mkdir($targetDir, 0755, true) && !is_dir($targetDir)) { $this->setFlash('upload_error', 'No se pudo crear el directorio de subida.'); return null; }
         }
+        if (!is_writable($targetDir)) { $this->setFlash('upload_error', 'El directorio de subida no tiene permisos de escritura.'); return null; }
 
         $tempPath = $targetDir . $filename;
         if (move_uploaded_file($file['tmp_name'], $tempPath)) {
@@ -176,13 +181,35 @@ class Controller
                         if ($jpegOk) {
                             @unlink($tempPath);
                             $storedName = $jpgName;
+                        } else {
+                            $this->setFlash('upload_error', 'La conversión a JPG falló (posible memoria insuficiente).');
                         }
                     }
                 }
             }
             return 'public/uploads/' . $folder . '/' . $storedName;
         }
+        $this->setFlash('upload_error', 'Error al mover el archivo subido.');
         return null;
+    }
+
+    protected function setFlash($key, $value)
+    {
+        if (!isset($_SESSION)) return;
+        $_SESSION['_flash'][$key] = $value;
+    }
+
+    protected function getFlash($key = null)
+    {
+        if (!isset($_SESSION)) return $key ? null : [];
+        if ($key === null) {
+            $all = $_SESSION['_flash'] ?? [];
+            unset($_SESSION['_flash']);
+            return $all;
+        }
+        $val = $_SESSION['_flash'][$key] ?? null;
+        unset($_SESSION['_flash'][$key]);
+        return $val;
     }
 
     protected function deleteFile($path)
