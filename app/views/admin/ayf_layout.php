@@ -38,6 +38,7 @@
             <li class="nav-item"><a href="<?= BASE_URL ?>ayf-admin/banners" class="nav-link text-white <?= strpos($u,'/ayf-admin/banners') !== false ? 'active' : '' ?>"><i class="bi bi-images me-2"></i>Banners</a></li>
             <li class="nav-item"><a href="<?= BASE_URL ?>ayf-admin/usuarios" class="nav-link text-white <?= strpos($u,'/ayf-admin/usuarios') !== false ? 'active' : '' ?>"><i class="bi bi-people me-2"></i>Usuarios</a></li>
             <li class="nav-item"><a href="<?= BASE_URL ?>ayf-admin/configuracion" class="nav-link text-white <?= strpos($u,'/ayf-admin/configuracion') !== false ? 'active' : '' ?>"><i class="bi bi-gear me-2"></i>Configuración</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white" onclick="event.preventDefault();var m='Módulo en desarrollo';if(typeof Swal!=='undefined'){Swal.fire({icon:'info',title:'Compra y Venta',text:m,timer:3000,showConfirmButton:false})}else{alert(m)}"><i class="bi bi-cart me-2"></i>Compra y Venta</a></li>
             <li class="nav-item mt-3"><a href="<?= BASE_URL ?>ayf" target="_blank" class="nav-link text-white"><i class="bi bi-eye me-2"></i>Ver Tienda</a></li>
             <li class="nav-item"><a href="<?= BASE_URL ?>ayf-admin/logout" class="nav-link text-danger"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
         </ul>
