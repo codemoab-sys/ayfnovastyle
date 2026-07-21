@@ -35,8 +35,8 @@ class AyfAdminController extends Controller
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['ayf_admin'])) {
             $uri = $_SERVER['REQUEST_URI'] ?? '';
-            $isJson = strpos($uri, '/data/') !== false || strpos($uri, '/guardar') !== false || strpos($uri, '/eliminar') !== false;
-            if (!$isJson) {
+            $skipCsrf = strpos($uri, '/data/') !== false || strpos($uri, '/guardar') !== false || strpos($uri, '/eliminar') !== false || strpos($uri, '/login') !== false;
+            if (!$skipCsrf) {
                 $this->validateCsrfToken();
             }
         }

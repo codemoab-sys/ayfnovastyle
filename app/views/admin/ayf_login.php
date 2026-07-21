@@ -20,6 +20,7 @@
                 <div class="alert alert-danger"><?= $error ?></div>
             <?php endif; ?>
             <form method="POST" action="<?= BASE_URL ?>ayf-admin/login">
+                <input type="hidden" name="_token" value="<?= htmlspecialchars($_SESSION['_csrf_token'] ?? '') ?>">
                 <div class="mb-3">
                     <label class="form-label">Usuario</label>
                     <input type="text" name="user" class="form-control form-control-lg" required>
