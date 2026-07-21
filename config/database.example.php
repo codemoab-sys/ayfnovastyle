@@ -1,11 +1,12 @@
 <?php
-return [
-    'host' => 'localhost',
-    'user' => 'root',
-    'password' => '',
-    'database' => 'catalogobd',
-    'base_url' => 'http://localhost/CATALOGO/ayfnovastyle',
-    'hide_php_errors' => true,
-    'rate_limit_per_ip' => 3,
-    'rate_limit_window' => 3600,
-];
+// Database configuration for AyfNovastyle
+// Copy this file as database.local.php and adjust values
+
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'catalogobd');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_CHARSET', 'utf8mb4');
+
+// Optional: override auto-detected BASE_URL if images/logos don't load
+// define('BASE_URL', 'https://tudominio.com/');
