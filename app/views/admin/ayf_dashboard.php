@@ -47,4 +47,30 @@
         </table>
     </div>
 </div>
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-header bg-white"><h5 class="mb-0 fw-bold">Diagnóstico</h5></div>
+    <div class="card-body small">
+        <?php
+            $uploadDir = __DIR__ . '/../../public/uploads/';
+            $bannerDir = $uploadDir . 'ayf_banners/';
+            $issues = [];
+            $resolvedDir = realpath(__DIR__ . '/../../public/uploads/') ?: 'NO RESUELVE';
+            echo "<p><strong>Directorio uploads:</strong> <code>$resolvedDir</code></p>";
+            echo "<p><strong>Existe:</strong> " . (is_dir($resolvedDir) ? '✅ Sí' : '❌ No') . "</p>";
+            if (is_dir($resolvedDir)) {
+                echo "<p><strong>Escribible:</strong> " . (is_writable($resolvedDir) ? '✅ Sí' : '❌ No') . "</p>";
+            }
+            echo "<p><strong>Directorio banners:</strong> " . (is_dir($bannerDir) ? '✅ Existe' : '❌ No existe') . "</p>";
+            if (is_dir($bannerDir)) {
+                echo "<p><strong>Escribible:</strong> " . (is_writable($bannerDir) ? '✅ Sí' : '❌ No') . "</p>";
+            }
+            echo "<p><strong>upload_max_filesize:</strong> " . ini_get('upload_max_filesize') . "</p>";
+            echo "<p><strong>post_max_size:</strong> " . ini_get('post_max_size') . "</p>";
+            echo "<p><strong>max_execution_time:</strong> " . ini_get('max_execution_time') . "s</p>";
+            echo "<p><strong>memory_limit:</strong> " . ini_get('memory_limit') . "</p>";
+            echo "<p><strong>display_errors:</strong> " . ini_get('display_errors') . "</p>";
+            echo "<p><strong>BASE_URL:</strong> <code>" . BASE_URL . "</code></p>";
+        ?>
+    </div>
+</div>
 <?php $content = ob_get_clean(); $title = 'Dashboard'; require __DIR__ . '/ayf_layout.php'; ?>
