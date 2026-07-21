@@ -5,6 +5,7 @@
         if (!s) return;
         var sl = s.querySelectorAll('.swiper-slide');
         if (sl.length < 1) return;
+        sl[0].classList.add('active');
         if (sl.length === 1) {
             s.querySelector('.swiper-pagination') && (s.querySelector('.swiper-pagination').style.display = 'none');
             s.querySelector('.swiper-button-next') && (s.querySelector('.swiper-button-next').style.display = 'none');
