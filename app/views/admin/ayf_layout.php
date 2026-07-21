@@ -46,10 +46,15 @@
         <?php
             $flashMsg = '';
             $flashType = '';
-            if (!empty($_SESSION['_flash']['upload_error'])) { $flashMsg = $_SESSION['_flash']['upload_error']; $flashType = 'error'; unset($_SESSION['_flash']['upload_error']); }
+            if (!empty($_SESSION['_flash']['upload_error'])) { $flashMsg = $_SESSION['_flash']['upload_error']; $flashType = 'danger'; unset($_SESSION['_flash']['upload_error']); }
             elseif (!empty($_SESSION['_flash']['success'])) { $flashMsg = $_SESSION['_flash']['success']; $flashType = 'success'; unset($_SESSION['_flash']['success']); }
         ?>
-        <?php $flashData = $flashMsg ? "Swal.fire({icon:'{$flashType}',title:'" . ($flashType==='error'?'Error':'Éxito') . "',text:'" . addslashes($flashMsg) . "',timer:5000,showConfirmButton:true,confirmButtonText:'OK',confirmButtonColor:'#e63946'});" : ''; ?>
+        <?php if ($flashMsg): ?>
+            <div class="alert alert-<?=$flashType?> alert-dismissible fade show" role="alert">
+                <i class="bi bi-<?=$flashType==='danger'?'exclamation-triangle':'check-circle'?> me-2"></i> <?=htmlspecialchars($flashMsg)?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
         <?= $content ?? '' ?>
         </div>
     </main>
