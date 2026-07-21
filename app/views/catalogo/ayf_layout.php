@@ -3,12 +3,7 @@ $c = $_AYF ?? [];
 $AYF_SITE_NAME = $c['site_name'] ?? 'AYF Novastyle';
 $AYF_SITE_DESC = $c['site_desc'] ?? 'Novedades en zapatillas y calzado';
 $AYF_LOGO = $c['logo'] ?? '';
-header('X-Frame-Options: SAMEORIGIN');
-header('X-Content-Type-Options: nosniff');
-header('Referrer-Policy: no-referrer-when-downgrade');
-header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
-$csp = "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com https://fonts.googleapis.com; connect-src 'self'; frame-ancestors 'self'; form-action 'self' https:; upgrade-insecure-requests";
-header('Content-Security-Policy: ' . $csp);
+
 $AYF_WHATSAPP = $c['whatsapp'] ?? '51995218178';
 $AYF_WHATSAPP_MSG = $c['whatsapp_msg'] ?? 'Hola, quiero más información';
 $AYF_EMAIL = $c['email'] ?? 'ventas@ayfnovastyle.com';
